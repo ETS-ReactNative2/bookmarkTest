@@ -14,6 +14,10 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		7699B88040F8A987B510C191 /* libPods-bookmarkApps-bookmarkAppsTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-bookmarkApps-bookmarkAppsTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		C1F207AB28193C1E006B56B2 /* SF-Pro-Text-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = C1F207AA28193C1E006B56B2 /* SF-Pro-Text-Regular.otf */; };
+		C1F207AF28194372006B56B2 /* SFREGULAR.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C1F207AE28194372006B56B2 /* SFREGULAR.ttf */; };
+		C1F207B02819A4E3006B56B2 /* SF-Pro-Text-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = C1F207AC2819402A006B56B2 /* SF-Pro-Text-Light.otf */; };
+		C1F207B12819A4E3006B56B2 /* SF-Pro-Text-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = C1F207AD2819402A006B56B2 /* SF-Pro-Text-Semibold.otf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +47,10 @@
 		5DCACB8F33CDC322A6C60F78 /* libPods-bookmarkApps.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-bookmarkApps.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = bookmarkApps/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-bookmarkApps-bookmarkAppsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bookmarkApps-bookmarkAppsTests.release.xcconfig"; path = "Target Support Files/Pods-bookmarkApps-bookmarkAppsTests/Pods-bookmarkApps-bookmarkAppsTests.release.xcconfig"; sourceTree = "<group>"; };
+		C1F207AA28193C1E006B56B2 /* SF-Pro-Text-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-Regular.otf"; sourceTree = "<group>"; };
+		C1F207AC2819402A006B56B2 /* SF-Pro-Text-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-Light.otf"; sourceTree = "<group>"; };
+		C1F207AD2819402A006B56B2 /* SF-Pro-Text-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-Semibold.otf"; sourceTree = "<group>"; };
+		C1F207AE28194372006B56B2 /* SFREGULAR.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SFREGULAR.ttf; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -116,6 +124,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				C1F207A928193BCB006B56B2 /* Resources */,
 				13B07FAE1A68108700A75B9A /* bookmarkApps */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* bookmarkAppsTests */,
@@ -146,6 +155,17 @@
 				89C6BE57DB24E9ADA2F236DE /* Pods-bookmarkApps-bookmarkAppsTests.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		C1F207A928193BCB006B56B2 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				C1F207AC2819402A006B56B2 /* SF-Pro-Text-Light.otf */,
+				C1F207AD2819402A006B56B2 /* SF-Pro-Text-Semibold.otf */,
+				C1F207AE28194372006B56B2 /* SFREGULAR.ttf */,
+				C1F207AA28193C1E006B56B2 /* SF-Pro-Text-Regular.otf */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -242,8 +262,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C1F207B12819A4E3006B56B2 /* SF-Pro-Text-Semibold.otf in Resources */,
+				C1F207AF28194372006B56B2 /* SFREGULAR.ttf in Resources */,
+				C1F207AB28193C1E006B56B2 /* SF-Pro-Text-Regular.otf in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				C1F207B02819A4E3006B56B2 /* SF-Pro-Text-Light.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
