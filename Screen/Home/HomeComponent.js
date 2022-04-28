@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Alert, View, Text, FlatList, StyleSheet, TouchableOpacity, Dimensions, SafeAreaView, ScrollView } from 'react-native';
+import { ActivityIndicator, Alert, View, Text, FlatList, StyleSheet, TouchableOpacity, Dimensions, SafeAreaView, ScrollView } from 'react-native';
 import { ListItem, Avatar } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import { Toolbar } from 'react-native-material-ui';
 import { theme as themeColor } from '../../value/Constants';
 import { StatusBar } from 'react-native';
+import _ from 'lodash';
 // import V2Loading from './miniComponent/V2Loading';
 import { Icon } from 'native-base';
 import { TextInput } from 'react-native-gesture-handler';
@@ -25,21 +26,189 @@ const SZ142 = width / 100 * 37.86;
 
 class HomeComponent extends Component {
 
-    urlApi = 'https://hc.transtv.co.id/rest';
-
     constructor(props) {
         super(props);
         this.state = {
             data: [],
             perusahaan: null,
             loading: false,
-            currentScreen: 1
+            page: 1,
+            currentScreen: 1,
+            isCanLoadMore: true,
+            search: ""
         }
     }
 
-
     componentDidMount() {
+        this.getData()
     }
+
+    _search = (search) => {
+        this.setState({
+            search: search,
+            refreshing: true,
+            page: 1,
+            data: []
+        }, () => {
+            this._postSearch();
+        });
+    }
+
+    _postSearch = _.debounce(() => {
+        console.log("search nih:", this.state.search)
+        this.setState({ loading: true })
+        this.getData()
+    }, 1000);
+
+    _keyExtractor = (item, index) => item.id.toString();
+    _renderItem = ({ item, index }) => {
+        const { theme } = this.props
+        console.log(item)
+        return (
+            <View
+                style={{
+                    marginTop: index == 0 ? SZ20 : 0,
+                    backgroundColor: "#fff",
+                    borderRadius: SZ12,
+                    marginHorizontal: SZ24,
+                    marginBottom: SZ20
+                }}
+            >
+                <View
+                    style={{
+                        marginHorizontal: SZ12,
+                        marginVertical: SZ1 * 8,
+                        flexDirection: 'row'
+                    }}
+                >
+                    <View
+                        style={{ flex: 0 }}
+                    >
+
+                    </View>
+                    <View
+                        style={{
+                            flex: 9,
+                            // backgroundColor: "#eaeaea"
+                        }}
+                    >
+                        <Text style={{
+                            minHeight: SZ1 * 28,
+                            color: "#494A4B",
+                            fontFamily: "SFProText-Regular",
+                            fontSize: SZ1 * 14,
+                            fontWeight: '600'
+                        }}>{item.name}</Text>
+                        <Text style={{
+                            marginTop: SZ1 * 3,
+                            color: "#494A4B",
+                            fontFamily: "SFProText-Regular",
+                            fontSize: SZ1 * 12,
+                            fontWeight: '400'
+                        }}>{"Type: " + item.brewery_type}</Text>
+                        <Text style={{
+                            marginTop: SZ1 * 3,
+                            color: "#00A3FF",
+                            fontFamily: "SFProText-Regular",
+                            fontSize: SZ1 * 12,
+                            fontWeight: '400'
+                        }}>{(item.street == null ? "" : item.street + ', ') + item.city + " - " + item.state}</Text>
+                    </View>
+                    <View
+                        style={{
+                            flex: 1,
+                            justifyContent: 'center'
+                        }}
+                    >
+                        <TouchableOpacity>
+                            <Icon
+                                name="bookmark-outline"
+                                style={{
+                                    color: '#00A3FF',
+                                    fontSize: SZ1 * 20,
+                                }} />
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </View>
+        )
+    };
+
+    footer = () => {
+        const { theme } = this.props
+        const { loading, isCanLoadMore } = this.state
+        return (
+            <View style={{
+                marginBottom: isCanLoadMore ? SZ48 : SZ12,
+                marginTop: SZ8
+            }}>
+                {
+                    isCanLoadMore ?
+                        <ActivityIndicator size="large" color={themeColor[theme]['activityIndicator']} />
+                        : null
+                }
+            </View>
+        );
+    }
+
+    getData() {
+        const { page, search } = this.state
+        var link = 'https://api.openbrewerydb.org/breweries?' + 'page=' + page + '&per_page=10' + (search != "" ? '&by_name=' + search : '')
+        fetch(link, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+        })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                var temp = this.state.data.concat(responseJson)
+                var canLoadMore = true
+                if (responseJson.length < 10) {
+                    canLoadMore = false
+                }
+                console.log('temp', temp)
+                this.setState({
+                    data: temp,
+                    loading: false,
+                    isCanLoadMore: canLoadMore
+                });
+            })
+            .catch((error) => {
+                console.log("get error:", error)
+                this.setState({
+                    refreshing: false
+                });
+            });
+    }
+
+    isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
+        const paddingToBottom = 20;
+        return layoutMeasurement.height + contentOffset.y >=
+            contentSize.height - paddingToBottom;
+    };
+
+    doSomething = _.debounce(() => {
+        const { isCanLoadMore, page } = this.state
+        if (this.state.data.length > 0) {
+            if (isCanLoadMore) {
+                console.log("LOAD MORE");
+
+                this.setState({
+                    loadMore: true,
+                    page: page + 1,
+                    loading: true
+                }, () => {
+                    this.getData();
+                });
+            } else {
+                console.log("CANT MPRE");
+            }
+        } else {
+            console.log("NODATA");
+        }
+    }, 100);
 
     render() {
         const { data, loading } = this.state;
@@ -80,7 +249,6 @@ class HomeComponent extends Component {
                         }}>Welcome Back 👋</Text>
 
                     </View>
-
                     <View
                         style={{
                             marginHorizontal: SZ1 * 16,
@@ -120,6 +288,9 @@ class HomeComponent extends Component {
                                 }}
                             >
                                 <TextInput
+                                    onChangeText={(text) => {
+                                        this._search(text)
+                                    }}
                                     placeholder='What are you searching for ?'
                                     placeholderTextColor={'#ffffff90'}
                                     style={{
@@ -134,15 +305,24 @@ class HomeComponent extends Component {
                     </View>
                 </View>
 
-                <ScrollView
+                <FlatList
                     showsVerticalScrollIndicator={false}
                     showsHorizontalScrollIndicator={false}
-                    style={{
-                        backgroundColor: themeColor[theme]['homeBg'],
-                        marginHorizontal: SZ24
+                    onScroll={({ nativeEvent }) => {
+                        if (this.isCloseToBottom(nativeEvent)) {
+                            this.doSomething();
+                        }
                     }}
-                >
-                </ScrollView>
+                    ListEmptyComponent={
+                        <View></View>
+                    }
+                    data={data}
+                    renderItem={this._renderItem}
+                    keyExtractor={this._keyExtractor}
+                    ListFooterComponent={this.footer}
+                // refreshing={refreshing}
+                // onRefresh={this._onRefresh}  
+                />
             </View>
         )
     }
@@ -160,33 +340,4 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
     },
-    list: {
-        flex: 1,
-        paddingVertical: 15,
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: 'center',
-    },
-    lightText: {
-        fontFamily: 'Montserrat-Light',
-        color: "#000",
-        width: 200,
-        fontSize: 12
-    },
-    line: {
-        height: 0.5,
-        width: '100%',
-        backgroundColor: "rgba(0, 0, 0, 0.5)"
-    },
-    isEmpty: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: 200,
-        flex: 1
-    },
-    textEmpty: {
-        color: 'red',
-        fontFamily: 'Montserrat-Light',
-        fontWeight: 'bold'
-    }
 });

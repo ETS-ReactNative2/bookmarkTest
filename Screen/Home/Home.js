@@ -11,6 +11,7 @@ import { Icon } from 'native-base';
 import { TextInput } from 'react-native-gesture-handler';
 import { ceil } from 'react-native-reanimated';
 import HomeComponent from './HomeComponent';
+import BookmarkComponent from './BookmarkComponent';
 
 const { width, height } = Dimensions.get('window');
 
@@ -34,7 +35,8 @@ class Home extends Component {
         this.state = {
             data: [],
             perusahaan: null,
-            loading: false
+            loading: false,
+            home: true
         }
     }
 
@@ -43,7 +45,7 @@ class Home extends Component {
     }
 
     render() {
-        const { data, loading } = this.state;
+        const { data, loading, home } = this.state;
         const { theme } = this.props
 
         return (
@@ -54,7 +56,13 @@ class Home extends Component {
                         <StatusBar
                             backgroundColor={"#00A3FF"}
                             barStyle={'light-content'} />
-                        <HomeComponent />
+                        {
+                            home ?
+                                <HomeComponent />
+                                :
+                                <BookmarkComponent />
+                        }
+
                         {/* <View
                             style={{ flex: 1 }}
                         >
@@ -168,6 +176,11 @@ class Home extends Component {
                                 }}
                             >
                                 <TouchableOpacity
+                                    onPress={() => {
+                                        this.setState({
+                                            home: true
+                                        })
+                                    }}
                                     style={{
                                         flex: 1,
                                         justifyContent: 'center',
@@ -178,11 +191,16 @@ class Home extends Component {
                                         type='Feather'
                                         name="home"
                                         style={{
-                                            color: '#00A3FF',
+                                            color: home ? '#00A3FF' : '#a7a7a7',
                                             fontSize: SZ8 / 8 * 24,
                                         }} />
                                 </TouchableOpacity>
                                 <TouchableOpacity
+                                    onPress={() => {
+                                        this.setState({
+                                            home: false
+                                        })
+                                    }}
                                     style={{
                                         flex: 1,
                                         justifyContent: 'center',
@@ -194,7 +212,7 @@ class Home extends Component {
                                         type='SimpleLineIcons'
                                         name="star"
                                         style={{
-                                            color: '#a7a7a7',
+                                            color: home ? '#a7a7a7' : '#00A3FF',
                                             fontSize: SZ8 / 8 * 24,
                                         }} />
                                 </TouchableOpacity>
