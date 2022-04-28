@@ -135,15 +135,6 @@ class BookmarkComponent extends Component {
                     </View>
                 </View>
 
-                <ScrollView
-                    showsVerticalScrollIndicator={false}
-                    showsHorizontalScrollIndicator={false}
-                    style={{
-                        backgroundColor: themeColor[theme]['homeBg'],
-                        marginHorizontal: SZ24
-                    }}
-                >
-                </ScrollView>
             </View>
         )
     }

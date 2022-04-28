@@ -58,7 +58,9 @@ class Home extends Component {
                             barStyle={'light-content'} />
                         {
                             home ?
-                                <HomeComponent />
+                                <HomeComponent
+                                    parentProps={this.props}
+                                />
                                 :
                                 <BookmarkComponent />
                         }
@@ -226,8 +228,8 @@ class Home extends Component {
 }
 
 const mapStateToProps = state => {
-    const { theme, dataProfile } = state;
-    return { theme, dataProfile };
+    const { theme, bookmark } = state;
+    return { theme, bookmark };
 };
 
 export default connect(mapStateToProps)(Home);

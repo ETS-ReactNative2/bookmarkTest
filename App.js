@@ -33,20 +33,20 @@ import { createStore } from 'redux';
 import { NavigationContainer } from '@react-navigation/native';
 import Base from './Screen/Base/Base';
 import Home from './Screen/Home/Home';
+import DetailBrew from './Screen/Home/Detail/DetailBrew';
 
 const Stack = createStackNavigator();
 
 const initialState = {
-  dataProfile: {},
-  initialModal: false,
+  bookmark: [],
   theme: 'light',
 
 }
 function rootReducer(state = initialState, action) {
   switch (action.type) {
-    case 'UPDATE_INITIALMODAL':
-      const { initialModal } = action.payload;
-      return { ...state, initialModal };
+    case 'UPDATE_BOOKMARK':
+      const { bookmark } = action.payload;
+      return { ...state, bookmark };
     default:
       return state;
   }
@@ -71,6 +71,13 @@ export default class App extends React.Component {
               <Stack.Screen
                 name="Home"
                 component={Home}
+                options={{
+                  headerShown: false
+                }}
+              />
+              <Stack.Screen
+                name="DetailBrew"
+                component={DetailBrew}
                 options={{
                   headerShown: false
                 }}

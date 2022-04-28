@@ -54,18 +54,21 @@ class HomeComponent extends Component {
         });
     }
 
-    _postSearch = _.debounce(() => {
-        console.log("search nih:", this.state.search)
+    _postSearch = _.debounce(() => { 
         this.setState({ loading: true })
         this.getData()
     }, 1000);
 
     _keyExtractor = (item, index) => item.id.toString();
     _renderItem = ({ item, index }) => {
-        const { theme } = this.props
-        console.log(item)
+        const { theme, bookmark, parentProps } = this.props
+        var tempIndex = bookmark.findIndex(x => x.id === item.id)
+        var isInBookmark = tempIndex == -1 ? false : true 
         return (
-            <View
+            <TouchableOpacity
+                onPress={() => {
+                    parentProps.navigation.navigate("DetailBrew", { data: item })
+                }}
                 style={{
                     marginTop: index == 0 ? SZ20 : 0,
                     backgroundColor: "#fff",
@@ -113,6 +116,7 @@ class HomeComponent extends Component {
                             fontSize: SZ1 * 12,
                             fontWeight: '400'
                         }}>{(item.street == null ? "" : item.street + ', ') + item.city + " - " + item.state}</Text>
+                        {/* <Text>{item.website_url}</Text> */}
                     </View>
                     <View
                         style={{
@@ -120,9 +124,29 @@ class HomeComponent extends Component {
                             justifyContent: 'center'
                         }}
                     >
-                        <TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => {
+                                this.setState({
+                                    loading: true
+                                })
+                                if (isInBookmark) {
+                                    var temp = bookmark
+                                    temp.splice(tempIndex, 1)
+                                    this.props.updateBookmark(temp)
+                                    Alert.alert("information", "Remove from bookmarked")
+                                } else {
+                                    var temp = bookmark
+                                    temp.push(item)
+                                    this.props.updateBookmark(temp)
+                                    Alert.alert("information", "Add to bookmark")
+                                }
+                                this.setState({
+                                    loading: false
+                                })
+                            }}
+                        >
                             <Icon
-                                name="bookmark-outline"
+                                name={isInBookmark ? "bookmark" : "bookmark-outline"}
                                 style={{
                                     color: '#00A3FF',
                                     fontSize: SZ1 * 20,
@@ -130,7 +154,7 @@ class HomeComponent extends Component {
                         </TouchableOpacity>
                     </View>
                 </View>
-            </View>
+            </TouchableOpacity>
         )
     };
 
@@ -168,7 +192,6 @@ class HomeComponent extends Component {
                 if (responseJson.length < 10) {
                     canLoadMore = false
                 }
-                console.log('temp', temp)
                 this.setState({
                     data: temp,
                     loading: false,
@@ -212,7 +235,8 @@ class HomeComponent extends Component {
 
     render() {
         const { data, loading } = this.state;
-        const { theme } = this.props
+        const { theme, bookmark } = this.props
+        // console.log("Bookmark data:", bookmark)
 
         return (
             <View
@@ -328,12 +352,19 @@ class HomeComponent extends Component {
     }
 }
 
+
+const updateBookmark = bookmark => ({
+    type: 'UPDATE_BOOKMARK',
+    payload: {
+        bookmark
+    }
+});
 const mapStateToProps = state => {
-    const { theme, dataProfile } = state;
-    return { theme, dataProfile };
+    const { theme, bookmark } = state;
+    return { theme, bookmark };
 };
 
-export default connect(mapStateToProps)(HomeComponent);
+export default connect(mapStateToProps, { updateBookmark })(HomeComponent);
 
 const styles = StyleSheet.create({
     background: {
