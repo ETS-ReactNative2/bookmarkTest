@@ -62,7 +62,9 @@ class Home extends Component {
                                     parentProps={this.props}
                                 />
                                 :
-                                <BookmarkComponent />
+                                <BookmarkComponent
+                                    parentProps={this.props}
+                                />
                         }
 
                         {/* <View

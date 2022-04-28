@@ -54,7 +54,7 @@ class HomeComponent extends Component {
         });
     }
 
-    _postSearch = _.debounce(() => { 
+    _postSearch = _.debounce(() => {
         this.setState({ loading: true })
         this.getData()
     }, 1000);
@@ -63,7 +63,7 @@ class HomeComponent extends Component {
     _renderItem = ({ item, index }) => {
         const { theme, bookmark, parentProps } = this.props
         var tempIndex = bookmark.findIndex(x => x.id === item.id)
-        var isInBookmark = tempIndex == -1 ? false : true 
+        var isInBookmark = tempIndex == -1 ? false : true
         return (
             <TouchableOpacity
                 onPress={() => {
@@ -133,7 +133,7 @@ class HomeComponent extends Component {
                                     var temp = bookmark
                                     temp.splice(tempIndex, 1)
                                     this.props.updateBookmark(temp)
-                                    Alert.alert("information", "Remove from bookmarked")
+                                    Alert.alert("information", "Remove from bookmar")
                                 } else {
                                     var temp = bookmark
                                     temp.push(item)
@@ -344,8 +344,6 @@ class HomeComponent extends Component {
                     renderItem={this._renderItem}
                     keyExtractor={this._keyExtractor}
                     ListFooterComponent={this.footer}
-                // refreshing={refreshing}
-                // onRefresh={this._onRefresh}  
                 />
             </View>
         )
