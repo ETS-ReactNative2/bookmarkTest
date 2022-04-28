@@ -35,4 +35,4 @@ cd ios
 pod install
 npx react-native run-ios
 ```
-![drawing](https://raw.githubusercontent.com/muhammadrofiq/bookmarkTest/main/assets/1.png| width=100))
+<img src="https://raw.githubusercontent.com/muhammadrofiq/bookmarkTest/main/assets/1.png" width="200"> 
